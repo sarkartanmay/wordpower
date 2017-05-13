@@ -29,7 +29,7 @@ var w = document.body.innerText;
 					for(var i =0;i<len ; i++){
 						nwd = data.infos[i].info.word ;
 						wds = data.infos[i].info.wd ;
-						document.body.innerHTML = document.body.innerHTML.replace(new RegExp(" "+nwd+" ", "g"), " <span title='"+wds+"'><i><u>" +nwd+" </u></i></span>");
+						document.body.innerHTML = document.body.innerHTML.replace(new RegExp(" "+nwd+" ", "g"), " <span title='"+wds+"'><i><u>" +nwd+"</u></i></span> ");
 					}
 					}catch(e){}
 					//sendResponse(data);					
