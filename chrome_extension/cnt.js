@@ -44,7 +44,7 @@ try{
 				}
 				}
 			
-			xmlhttp.open("GET","//localhost/hackathon/api/public.php?t=1&u="+urank2+"&w="+w,true);
+			xmlhttp.open("GET","//word.tanmaysarkar.com/api/public.php?t=1&u="+urank2+"&w="+w,true);
 			xmlhttp.setRequestHeader("accept", "application/json");
 			xmlhttp.setRequestHeader( "Access-Control-Allow-Origin", "*");	
 			xmlhttp.send();
