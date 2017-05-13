@@ -1,0 +1,48 @@
+{
+  "manifest_version": 2,
+
+  "name": "Word Power",
+  "description": "Searching word meaning",
+  "version": "1.0",
+
+  "commands": {
+	"toggle-feature-foo": {
+		"suggested_key": {
+			"default": "Ctrl+Shift+5"
+		},
+		"description": "Run word meaning",
+		"global": true
+		}
+	},
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html",
+	"default_title": "Word Power"
+  },
+  "icons": {
+        "64" : "icon1.png",
+        "128" : "icon2.png"
+      },
+  "permissions": [
+	 "*://*/*",
+    "activeTab",
+    "https://ajax.googleapis.com/",
+    "http://word.tanmaysarkar.com/",
+    "http://phrasefinder.io/",
+    "http://localhost/",
+	"storage"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["http://*/*","https://*/*"],
+	  "run_at": "document_end",
+      "js": ["cnt.js"]
+    }
+  ],
+  "background": {
+    "scripts": ["eventPage.js"]
+  },
+  "chrome_url_overrides" : {
+    "newtab": "word_home.html"
+  }
+}
