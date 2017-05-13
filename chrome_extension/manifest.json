@@ -39,7 +39,7 @@
       "js": ["cnt.js"]
     }
   ],
-  "background": {
+  "background": {	
     "scripts": ["eventPage.js"]
   },
   "chrome_url_overrides" : {
