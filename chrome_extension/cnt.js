@@ -2,8 +2,12 @@ chrome.runtime.sendMessage(document.body.innerText , function(response) {
   //console.log(response);
 });
 
-
-var w = document.body.innerText;
+var urank2 =0;
+try{
+	chrome.storage.local.get('b1', function(result){
+	urank2 = parseFloat(result.b1);	
+	//---------------------- Put All Code here ----------------------------	
+		var w = document.body.innerText;
 		var res="";
 		var c="";
 		var inm ;
@@ -40,7 +44,16 @@ var w = document.body.innerText;
 				}
 				}
 			
-			xmlhttp.open("GET","//localhost/hackathon/api/public.php?t=1&w="+w,true);
+			xmlhttp.open("GET","//localhost/hackathon/api/public.php?t=1&u="+urank2+"&w="+w,true);
 			xmlhttp.setRequestHeader("accept", "application/json");
 			xmlhttp.setRequestHeader( "Access-Control-Allow-Origin", "*");	
 			xmlhttp.send();
+	//---------------------- Put All Code here ----------------------------		
+  });
+}catch(e){
+	
+}finally{
+	
+}
+		
+		

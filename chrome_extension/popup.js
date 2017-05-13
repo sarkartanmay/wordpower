@@ -2,6 +2,7 @@ chrome.tabs.executeScript( {
   code: "window.getSelection().toString();"
 }, function(selection) {
 	if(selection[0].length > 0){
+		
 		var w = selection[0].trim();
 		var res="";
 		var c="",c1="";

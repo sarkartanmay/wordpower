@@ -79,5 +79,10 @@ function setBase(val){
 	var obj= {};							
 	obj[v1] = parseFloat(val);
 	storage.set(obj);
+	
+	var v2 = 'p1';
+	var obj2= {};							
+	obj[v2] = parseFloat(val);
+	storage.set(obj);
 	//alert(val);
 }
