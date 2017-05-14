@@ -4,7 +4,12 @@
 		chrome.storage.local.get('p1', function(result){
 		old_value = parseFloat(result.p1);
 		if(old_value){
-			document.getElementById('item_reflect').innerHTML = "Your Score : "+old_value ;	
+			//--------------------------------------------------------------------
+			
+			
+			//--------------------------------------------------------------------
+			
+			//document.getElementById('item_reflect').innerHTML = "Your Score : "+old_value ;	
 		}else{
 			document.getElementById('item_reflect').innerHTML = "";	
 			document.getElementById('item_reflect2').innerHTML = "";	
@@ -23,6 +28,58 @@
 		var data = JSON.parse(uwd);
 		var msg ="";
 		var len2 = data.length;
+		var x =0.0;
+		for(i=0;i<len2;i++){
+			x = x+ parseFloat(data[i].search_w_score);
+		}
+		var cur_score = x+old_value ;
+		//document.getElementById('item_reflect').innerHTML = "Your Score : "+cur_score;	
+		small_cu_score = 45690+99380;
+		small_cu_count = 35;
+		
+		mid_cu_score = small_cu_score + 173060+266690;
+		mid_cu_count = 70;
+		
+		high_cu_score = mid_cu_score + 414160;
+		high_cu_count = 85;
+		
+		var c=0;
+		var lvl ="";
+		if(cur_score < small_cu_score && len2 < small_cu_count){
+			var a = (cur_score/small_cu_score);
+			var b = (len2/small_cu_count);
+			c=0;
+			if(a<b){
+				c=a*100;
+			}else{
+				c=b*100;
+			}	
+			lvl = "Beginner";
+		}else if(cur_score < mid_cu_score && len2 < mid_cu_count){
+			var a = (cur_score/mid_cu_score);
+			var b = (len2/mid_cu_count);
+			c=0;
+			if(a<b){
+				c=a*100;
+			}else{
+				c=b*100;
+			}	
+			lvl = "Intermediate";			
+		}else if(cur_score < high_cu_score && len2 < high_cu_count){
+			var a = (cur_score/high_cu_score);
+			var b = (len2/high_cu_count);
+			c=0;
+			if(a<b){
+				c=a*100;
+			}else{
+				c=b*100;
+			}	
+			lvl = "Advanced";
+		}
+		
+		
+		document.getElementById('item_first').innerHTML = "<h4>Your Level is : " + lvl + " ("+Math.round(c,3)+" % )</h4><br/><div class='progress'><div class='progress-bar' role='progressbar' aria-valuenow='"+c+"' aria-valuemin='0' aria-valuemax='100' style='width:"+c+"%'></div></div>" ;
+		
 		
 		for(i=0;i<len2;i++){
 			var x = data[i].synonyms_total.split(",");
@@ -331,10 +388,10 @@
 					v= Math.round((((ud-31801)/(127199 -31801))*100))
 					sc = "Level Pro : " + v+ " %";
 				}
-				document.getElementById('item_first').innerHTML = "According your test your Base Score is : " + sc + "<br/><div class='progress'><div class='progress-bar' role='progressbar' aria-valuenow='"+v+"' aria-valuemin='0' aria-valuemax='100' style='width:"+v+"%'></div></div>" ;
+				//document.getElementById('item_first').innerHTML = "According your test your Base Score is : " + sc + "<br/><div class='progress'><div class='progress-bar' role='progressbar' aria-valuenow='"+v+"' aria-valuemin='0' aria-valuemax='100' style='width:"+v+"%'></div></div>" ;
 			  });
 			}catch(e){}
-			document.getElementById('item_first').innerHTML = "";
+			//document.getElementById('item_first').innerHTML = "";
 			document.getElementById('item_first2').innerHTML = "";
 			
 		}
