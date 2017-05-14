@@ -3,6 +3,26 @@ chrome.runtime.sendMessage(document.body.innerText , function(response) {
 });
 
 var urank2 =0;
+
+var old_word_value =0,uwd="";
+	try{
+		chrome.storage.local.get('user_word', function(result){
+		old_word_value = result.user_word;
+		
+		
+		if(old_word_value){
+			//alert(old_word_value);
+			findlocallearn(old_word_value);
+		}else{			
+			findlocallearn("");
+		}
+			
+	  });
+	}catch(e){		
+		findlocallearn("");
+	}
+
+function findlocallearn(locallearn){
 try{
 	chrome.storage.local.get('b1', function(result){
 	urank2 = parseFloat(result.b1);	
@@ -13,6 +33,11 @@ try{
 		var inm ;
 		var ultmsg ="";
 		//renderStatus(w);
+		if(locallearn){
+			
+		}else{
+			
+		}
 		
 			if (window.XMLHttpRequest){
 				xmlhttp=new XMLHttpRequest();
@@ -32,7 +57,7 @@ try{
 					var nwd="",wds="";
 					for(var i =0;i<len ; i++){
 						nwd = data.infos[i].info.word ;
-						wds = data.infos[i].info.wd ;
+						wds = data.infos[i].info.wd ;						
 						document.body.innerHTML = document.body.innerHTML.replace(new RegExp(" "+nwd+" ", "g"), " <span title='"+wds+"'><i><u>" +nwd+"</u></i></span> ");
 					}
 					}catch(e){}
@@ -55,5 +80,4 @@ try{
 }finally{
 	
 }
-		
-		
+}	

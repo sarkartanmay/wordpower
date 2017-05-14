@@ -7,6 +7,7 @@
 			document.getElementById('item_reflect').innerHTML = "Your Score : "+old_value ;	
 		}else{
 			document.getElementById('item_reflect').innerHTML = "";	
+			document.getElementById('item_reflect2').innerHTML = "";	
 		}
 			
 	  });
@@ -16,10 +17,13 @@
 		
 		chrome.storage.local.get('user_word', function(result){
 		uwd = result.user_word;
-		
+		if(!uwd){
+			document.getElementById('game1_susbmit').innerHTML = "";
+		}
 		var data = JSON.parse(uwd);
 		var msg ="";
 		var len2 = data.length;
+		
 		for(i=0;i<len2;i++){
 			var x = data[i].synonyms_total.split(",");
 			msg = msg + "<b>"+data[i].search_word + "</b> - Synonyms : ";
@@ -90,7 +94,7 @@
 			}
 			qset[qno4] = ans;
 			
-			crt_ques = crt_ques + "<br/>Ans : "+ data[qno].search_word;
+			//crt_ques = crt_ques + "<br/>Ans : "+ data[qno].search_word;
 			crt_ques = crt_ques + "<br/<br/>";
 			for(k=1;k<=4;k++){
 				crt_ques = crt_ques + "<input type='radio' name='quiz_01' id='quiz_01' value='"+qset[k]+"'> "+qset[k]+"<br>";
@@ -99,8 +103,14 @@
 			
 			crt_ques = crt_ques + "<input type='hidden' name='ult_ans' id='ult_ans' value='"+ans+"'>";
 			document.getElementById('game1').innerHTML = crt_ques;
+		}else{
+			document.getElementById('game1_susbmit').innerHTML = "";
 		}
 	  });
+	  
+	  
+	  
+	  
 	}catch(e){}
 	
 	// ------------ Load base score
@@ -326,7 +336,7 @@
 			}catch(e){}
 			document.getElementById('item_first').innerHTML = "";
 			document.getElementById('item_first2').innerHTML = "";
-			//document.getElementById('game1_susbmit').innerHTML = "";
+			
 		}
 	  });
 	}catch(e){}

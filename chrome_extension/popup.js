@@ -48,15 +48,23 @@ chrome.tabs.executeScript( {
 						t1 = data.phase2[0].results[0].lexicalEntries[0].lexicalCategory;						
 						t = "<br/>Type : "+ t1 + "<br/>";						
 						for(var i =0 ; i< len; i++){
-							a = a + data.phase2[0].results[0].lexicalEntries[0].entries[0].senses[0].synonyms[i].text;
-							a1 = a1 + data.phase2[0].results[0].lexicalEntries[0].entries[0].senses[0].synonyms[i].text;
-							a2 = a2 + data.phase2[0].results[0].lexicalEntries[0].entries[0].senses[0].synonyms[i].text;
+							var adt = data.phase2[0].results[0].lexicalEntries[0].entries[0].senses[0].synonyms[i].text.trim();
+							a = a + adt;
+							a1 = a1 + adt;
+							//alert(adt);
+							if(!adt.includes(" ")>0){
+								a2 = a2 + adt;								
+							}else{
+								//alert("2"+adt);
+							}							
 							if(i%5==0 && i != 0){
 								a= a + "\n";
 							}else if (i!=len-1){
 								a=a + " , ";
 								a1=a1 + ",";
-								a2=a2 + " ";
+								if(!adt.indexOf(" ")>=0){
+									a2=a2 + " ";
+								}								
 							}							
 						}						
 					}catch(e){
@@ -81,9 +89,10 @@ chrome.tabs.executeScript( {
 							var main_word_score =0;
 							if(res=== true) {
 								var len2 = data2.infos.length;
-								ultmsg = ultmsg + "<br/>With Rank </br>";
+								//ultmsg = ultmsg + "<br/>With Rank </br>";
 								for(var i=0;i<len2;i++){
-									ultmsg = ultmsg + data2.infos[i].info.word +  "  " + data2.infos[i].info.wd + "<br/>";
+									//ultmsg = ultmsg + data2.infos[i].info.word +  "  " + data2.infos[i].info.wd + "<br/>";
+									
 									// allword = allword + data2.infos[i].info.word +  ":" + data2.infos[i].info.wd;
 									if(data2.infos[i].info.word == w){
 										main_word_score = data2.infos[i].info.wd;
@@ -206,7 +215,7 @@ chrome.tabs.executeScript( {
 	}else{
 		//alert(document.documentElement.innerHTML);
 		//renderStatus(prev +"<br/><b>Plese select a word</b>");
-		renderStatus("<b>Plese select a word</b>");
+		renderStatus("<b>Please select a word</b>");
 	}		
 });
 

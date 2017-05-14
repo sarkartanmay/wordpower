@@ -1,6 +1,19 @@
 	document.getElementById('shareme').addEventListener('click', share_fb);
 	function share_fb() {
-		window.location = "https://www.facebook.com/sharer/sharer.php?u=www.tanmaysarkar.com&title=Word Power&caption=My Vocabulary Score&quote=Learn the new word&description=Learn new words and build a powerfull Vocabulary";
+		var old_value =0,uwd="";
+		try{
+			chrome.storage.local.get('p1', function(result){
+			old_value = parseFloat(result.p1);
+			if(old_value){
+				window.location = "https://www.facebook.com/sharer/sharer.php?u=www.word.tanmaysarkar.com&picture=word.tanmaysarkar.com/word.png&title=Word Power&caption=My Vocabulary Score &quote=My score in Word Power app is "+old_value+" what about you?&description=Learn new words and build a powerfull Vocabulary";
+			}else{
+				window.location = "https://www.facebook.com/sharer/sharer.php?u=www.tanmaysarkar.com&picture=word.tanmaysarkar.com/word.png&title=Word Power&caption=My Vocabulary Score&quote=Learn the new word&description=Learn new words and build a powerfull Vocabulary";
+			}
+		  });
+		}catch(e){
+			window.location = "https://www.facebook.com/sharer/sharer.php?u=www.word.tanmaysarkar.com&picture=word.tanmaysarkar.com/word.png&title=Word Power&caption=My Vocabulary Score&quote=Learn the new word&description=Learn new words and build a powerfull Vocabulary";
+		}
+		
 	}
 	
 	document.getElementById('sub_game').addEventListener('click', guess_game);
