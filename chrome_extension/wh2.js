@@ -4,14 +4,15 @@
 		try{
 			chrome.storage.local.get('p1', function(result){
 			old_value = parseFloat(result.p1);
+			var old_value2 = document.getElementById("c_score").value;
 			if(old_value){
-				window.location = "https://www.facebook.com/sharer/sharer.php?u=www.word.tanmaysarkar.com&picture=word.tanmaysarkar.com/word.png&title=Word Power&caption=My Vocabulary Score &quote=My score in Word Power app is "+old_value+" what about you?&description=Learn new words and build a powerfull Vocabulary";
+				window.location = "https://www.facebook.com/sharer/sharer.php?u=www.word.tanmaysarkar.com&picture=http://word.tanmaysarkar.com/word.png&title=Word Power&caption=My Vocabulary Score &quote=My score in Word Power app is "+old_value2+" what about you?&description=Learn new words and build a powerfull Vocabulary";
 			}else{
-				window.location = "https://www.facebook.com/sharer/sharer.php?u=www.tanmaysarkar.com&picture=word.tanmaysarkar.com/word.png&title=Word Power&caption=My Vocabulary Score&quote=Learn the new word&description=Learn new words and build a powerfull Vocabulary";
+				window.location = "https://www.facebook.com/sharer/sharer.php?u=www.tanmaysarkar.com&picture=http://word.tanmaysarkar.com/word.png&title=Word Power&caption=My Vocabulary Score&quote=Learn the new word&description=Learn new words and build a powerfull Vocabulary";
 			}
 		  });
 		}catch(e){
-			window.location = "https://www.facebook.com/sharer/sharer.php?u=www.word.tanmaysarkar.com&picture=word.tanmaysarkar.com/word.png&title=Word Power&caption=My Vocabulary Score&quote=Learn the new word&description=Learn new words and build a powerfull Vocabulary";
+			window.location = "https://www.facebook.com/sharer/sharer.php?u=www.word.tanmaysarkar.com&picture=//word.tanmaysarkar.com/word.png&title=Word Power&caption=My Vocabulary Score&quote=Learn the new word&description=Learn new words and build a powerfull Vocabulary";
 		}
 		
 	}
@@ -31,10 +32,10 @@
 			var ult_ans = document.getElementById("ult_ans").value ; 
 			if(ult_ans == gv_ans){				
 				document.getElementById('game1').innerHTML ="";
-				document.getElementById('game1_susbmit').innerHTML ="Nice! You remembered correctly";
+				document.getElementById('game1_susbmit').innerHTML ="<br/>Nice! You remembered correctly";
 			}else{
 				document.getElementById('game1').innerHTML ="";
-				document.getElementById('game1_susbmit').innerHTML ="Sorry !! Wrong choice. Correct answer is <b>"+ult_ans+"</b>";
+				document.getElementById('game1_susbmit').innerHTML ="<br/>Sorry !! Wrong choice. Correct answer is <b>"+ult_ans+"</b>";
 			}
 			
 		}else{

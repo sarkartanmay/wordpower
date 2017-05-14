@@ -1,7 +1,14 @@
-chrome.tabs.executeScript( {
-  code: "window.getSelection().toString();"
-}, function(selection) {
-	if(selection[0].length > 0){
+chrome.tabs.executeScript( { code: "window.getSelection().toString();"}, function(selection) {
+		chkWord(selection);
+});
+
+function renderStatus(statusText) {
+  //document.getElementById('status').textContent = "";
+  document.getElementById('status').innerHTML = statusText;
+}
+
+function chkWord(selection){
+	if(selection.length > 0){
 		
 		var w = selection[0].trim();
 		var res="";
@@ -216,10 +223,5 @@ chrome.tabs.executeScript( {
 		//alert(document.documentElement.innerHTML);
 		//renderStatus(prev +"<br/><b>Plese select a word</b>");
 		renderStatus("<b>Please select a word</b>");
-	}		
-});
-
-function renderStatus(statusText) {
-  //document.getElementById('status').textContent = "";
-  document.getElementById('status').innerHTML = statusText;
+	}	
 }

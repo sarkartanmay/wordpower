@@ -77,11 +77,14 @@
 			lvl = "Advanced";
 		}
 		
+		var st = lvl + " "+Math.round(c,3)+" %";
+		document.getElementById('item_first').innerHTML = "<h4>Your Level is : " + lvl + " ("+Math.round(c,3)+" % )</h4><br/><div class='progress'><div class='progress-bar' role='progressbar' aria-valuenow='"+c+"' aria-valuemin='0' aria-valuemax='100' style='width:"+c+"%'></div></div><input type='hidden' id='c_score' name='c_score' value='"+st+"' /> " ;
 		
-		document.getElementById('item_first').innerHTML = "<h4>Your Level is : " + lvl + " ("+Math.round(c,3)+" % )</h4><br/><div class='progress'><div class='progress-bar' role='progressbar' aria-valuenow='"+c+"' aria-valuemin='0' aria-valuemax='100' style='width:"+c+"%'></div></div>" ;
-		
-		
-		for(i=0;i<len2;i++){
+		var len3 =5;
+		if(len2<len3){
+			len3=len2;
+		}
+		for(i=0;i<len3;i++){
 			var x = data[i].synonyms_total.split(",");
 			msg = msg + "<b>"+data[i].search_word + "</b> - Synonyms : ";
 			for(j=0;j<x.length;j++){
@@ -105,7 +108,7 @@
 			var syn_array = syn.split(',');
 			var syn_any = Math.floor(Math.random() * syn_array.length-1) + 1;
 
-			crt_ques = "I am <b>" + data[qno].typ+"</b>";
+			crt_ques = "<br/><br/><b>Quiz Time</b><br/><br/>I am <b>" + data[qno].typ+"</b>";
 			crt_ques = crt_ques + "<br/>and one of my synonym is : <b>" + syn_array[syn_any].split(":")[0]+"</b>";
 			crt_ques = crt_ques + "<br/>Tell me who am I ? ";
 			var ans = data[qno].search_word;
