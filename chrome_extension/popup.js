@@ -23,7 +23,7 @@ chrome.tabs.executeScript( {
 					
 					var data = JSON.parse(inm);
 					//var data = JSON.parse(xmlhttp.responseText);
-					var a,a1,b,t;
+					var a,a1,b,t,t1="";
 					try{
 						var len = data.phase1[0].results[0].lexicalEntries.length;
 						try{
@@ -41,18 +41,22 @@ chrome.tabs.executeScript( {
 						c = "Not found";
 					}
 					a="";
-					a1="";
+					a1=""
+					a2=w +" ";
 					try{											
-						var len = data.phase2[0].results[0].lexicalEntries[0].entries[0].senses[0].synonyms.length;	
-						t = "<br/>Type : "+data.phase2[0].results[0].lexicalEntries[0].lexicalCategory + "<br/>";						
+						var len = data.phase2[0].results[0].lexicalEntries[0].entries[0].senses[0].synonyms.length;
+						t1 = data.phase2[0].results[0].lexicalEntries[0].lexicalCategory;						
+						t = "<br/>Type : "+ t1 + "<br/>";						
 						for(var i =0 ; i< len; i++){
 							a = a + data.phase2[0].results[0].lexicalEntries[0].entries[0].senses[0].synonyms[i].text;
 							a1 = a1 + data.phase2[0].results[0].lexicalEntries[0].entries[0].senses[0].synonyms[i].text;
+							a2 = a2 + data.phase2[0].results[0].lexicalEntries[0].entries[0].senses[0].synonyms[i].text;
 							if(i%5==0 && i != 0){
 								a= a + "\n";
 							}else if (i!=len-1){
 								a=a + " , ";
 								a1=a1 + ",";
+								a2=a2 + " ";
 							}							
 						}						
 					}catch(e){
@@ -62,62 +66,7 @@ chrome.tabs.executeScript( {
 					ultmsg = ultmsg +"<h4>"+ w + "</h4>\n"+c + "<b>"+t+"Synonyms:</b><br/>" + a;
 					//renderStatus(ultmsg);
 					
-					//------------------------- Store in Local Storage ---------------------
-					var obj = new Object();
-					   obj.search_word = w;
-					   obj.meaning  = c1;
-					   obj.synonyms  = a1;
-					   var jsonString= "["+ JSON.stringify(obj) + "]";
-					   
-					   //~~~~~~ load previous value 
-					   
-							var prev_value ="";
-							try{
-								chrome.storage.local.get('user_word', function(result){
-									
-								prev_value = result.user_word;
-								if(prev_value){
-									if( !prev_value.includes("\"search_word\":\""+w+"\"") ){
-										// New Add										
-										prev_value = prev_value.replace("[","");
-										jsonString = jsonString.replace("]",",");
-										jsonString = jsonString + prev_value;
-										
-										
-										var storage_word = chrome.storage.local;
-										var uw1 = 'user_word';
-										var obj= {};							
-										obj[uw1] = jsonString;
-										//obj[uw1] = obj[uw1].concat(prev_value);
-										storage_word.set(obj);
-									}else{		
-										// already stored
-										//alert("inside 2");
-									}
-								}else{
-									var storage_word = chrome.storage.local;
-									var uw1 = 'user_word';
-									var obj= {};							
-									obj[uw1] = jsonString;
-									//obj[uw1] = obj[uw1].concat(prev_value);
-									storage_word.set(obj);
-								}
-							    
-								//prev_value = JSON.stringify(prev_value);
-							  });
-							}catch(e){
-								alert("catch");
-								var storage_word = chrome.storage.local;
-								var uw1 = 'user_word';
-								var obj= {};							
-								obj[uw1] = jsonString;
-								//obj[uw1] = obj[uw1].concat(prev_value);
-								storage_word.set(obj);
-							}
-					   
-					   
-					   
-					//------------------------- Store in Local Storage ---------------------
+					
 					
 					if (window.XMLHttpRequest){
 						xmlhttp2=new XMLHttpRequest();
@@ -127,16 +76,93 @@ chrome.tabs.executeScript( {
 					xmlhttp2.onreadystatechange=function(){				
 						if (xmlhttp2.readyState==4 && xmlhttp2.status==200){
 							var data2 = JSON.parse(xmlhttp2.responseText);
-							var len2 = data2.phrases.length;
-							var mc_sum =0;
-							for(var i=0;i<len2;i++){
-								mc_sum  = mc_sum + parseInt(data2.phrases[i].mc);
+							var res = data2.response[0].success;
+							var allword	="";
+							var main_word_score =0;
+							if(res=== true) {
+								var len2 = data2.infos.length;
+								ultmsg = ultmsg + "<br/>With Rank </br>";
+								for(var i=0;i<len2;i++){
+									ultmsg = ultmsg + data2.infos[i].info.word +  "  " + data2.infos[i].info.wd + "<br/>";
+									// allword = allword + data2.infos[i].info.word +  ":" + data2.infos[i].info.wd;
+									if(data2.infos[i].info.word == w){
+										main_word_score = data2.infos[i].info.wd;
+									}else{
+										allword = allword + data2.infos[i].info.word +  ":" + data2.infos[i].info.wd;
+										if (i!=len2-1){
+											allword = allword + ",";
+										}
+									}									
+								}								
 							}	
-							ultmsg = ultmsg + "<br/>Word Weight : " +mc_sum;
-							var sc = (w.length/mc_sum)*Math.pow(10,7)
-							ultmsg = ultmsg + "<br/>Score : " + sc;
+							renderStatus(ultmsg);
+							
+							//------------------------- Store in Local Storage ---------------------
+							var obj = new Object();
+							obj.search_word = w;
+							obj.search_w_score = main_word_score;
+							obj.meaning  = c1;
+							obj.synonyms  = a1;
+							obj.synonyms_total  = allword;
+							obj.typ  = t1;
+							var jsonString= "["+ JSON.stringify(obj) + "]";
+						   
+						   //~~~~~~ load previous value 
+						   
+								var prev_value ="";
+								try{
+									chrome.storage.local.get('user_word', function(result){
+										
+									prev_value = result.user_word;
+									if(prev_value){
+										if( !prev_value.includes("\"search_word\":\""+w+"\"") ){
+											// New Add										
+											prev_value = prev_value.replace("[","");
+											jsonString = jsonString.replace("]",",");
+											jsonString = jsonString + prev_value;
+											
+											
+											var storage_word = chrome.storage.local;
+											var uw1 = 'user_word';
+											var obj= {};							
+											obj[uw1] = jsonString;
+											//obj[uw1] = obj[uw1].concat(prev_value);
+											storage_word.set(obj);
+										}else{		
+											// already stored
+											//alert("inside 2");
+										}
+									}else{
+										var storage_word = chrome.storage.local;
+										var uw1 = 'user_word';
+										var obj= {};							
+										obj[uw1] = jsonString;
+										//obj[uw1] = obj[uw1].concat(prev_value);
+										storage_word.set(obj);
+									}
+									
+									//prev_value = JSON.stringify(prev_value);
+								  });
+								}catch(e){
+									alert("catch");
+									var storage_word = chrome.storage.local;
+									var uw1 = 'user_word';
+									var obj= {};							
+									obj[uw1] = jsonString;
+									//obj[uw1] = obj[uw1].concat(prev_value);
+									storage_word.set(obj);
+								}
+						   
+						   
+						   
+							//------------------------- Store in Local Storage ---------------------
+							
+							//ultmsg = ultmsg + "<br/>Word Weight : " +mc_sum;
+							//var sc = (w.length/mc_sum)*Math.pow(10,7)
+							//ultmsg = ultmsg + "<br/>Score : " + sc;
 							
 							//---------------------------------------
+							/*
 							var storage = chrome.storage.local;
 							var old_value =0;
 							try{
@@ -156,13 +182,13 @@ chrome.tabs.executeScript( {
 								ultmsg = ultmsg + "<br/>User Weight : "+p1;
 								renderStatus(ultmsg);
 							  });
-							
+							*/
 							//---------------------------------------
 							
 						}
 						
 					}
-					xmlhttp2.open("GET","http://phrasefinder.io/search?query="+w,true);
+					xmlhttp2.open("GET","http://word.tanmaysarkar.com/api/public.php?t=1&w="+a2,true);
 					xmlhttp2.setRequestHeader("accept", "application/json");
 					xmlhttp2.setRequestHeader( 'Access-Control-Allow-Origin', '*');			
 					xmlhttp2.send();

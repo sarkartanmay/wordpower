@@ -1,3 +1,34 @@
+	document.getElementById('shareme').addEventListener('click', share_fb);
+	function share_fb() {
+		window.location = "https://www.facebook.com/sharer/sharer.php?u=www.tanmaysarkar.com&title=Word Power&caption=My Vocabulary Score&quote=Learn the new word&description=Learn new words and build a powerfull Vocabulary";
+	}
+	
+	document.getElementById('sub_game').addEventListener('click', guess_game);
+	function guess_game() {	
+		var gv_ans;	
+		var allradios = document.getElementsByName('quiz_01');		
+		var rate_value;
+		for(var i = 0; i < allradios.length; i++){
+			if(allradios[i].checked){
+				gv_ans = allradios[i].value;
+			}
+		}
+		
+		if(gv_ans){
+			var ult_ans = document.getElementById("ult_ans").value ; 
+			if(ult_ans == gv_ans){				
+				document.getElementById('game1').innerHTML ="";
+				document.getElementById('game1_susbmit').innerHTML ="Nice! You remembered correctly";
+			}else{
+				document.getElementById('game1').innerHTML ="";
+				document.getElementById('game1_susbmit').innerHTML ="Sorry !! Wrong choice. Correct answer is <b>"+ult_ans+"</b>";
+			}
+			
+		}else{
+			alert("Please select your answer.");
+		}
+	}
+	
 	document.getElementById('clickme').addEventListener('click', hello);
 	function hello() {
 		var user_val = 2050 ;

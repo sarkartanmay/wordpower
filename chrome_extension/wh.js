@@ -4,7 +4,7 @@
 		chrome.storage.local.get('p1', function(result){
 		old_value = parseFloat(result.p1);
 		if(old_value){
-			document.getElementById('item_reflect').innerHTML = "Your Score : "+old_value;	
+			document.getElementById('item_reflect').innerHTML = "Your Score : "+old_value ;	
 		}else{
 			document.getElementById('item_reflect').innerHTML = "";	
 		}
@@ -19,10 +19,87 @@
 		
 		var data = JSON.parse(uwd);
 		var msg ="";
-		for(i=0;i<data.length;i++){
-			msg = msg + "<b>"+data[i].search_word + "</b> - Synonyms : "+ data[i].synonyms +"<br/>";
+		var len2 = data.length;
+		for(i=0;i<len2;i++){
+			var x = data[i].synonyms_total.split(",");
+			msg = msg + "<b>"+data[i].search_word + "</b> - Synonyms : ";
+			for(j=0;j<x.length;j++){
+				var y = x[j].split(":");
+				msg = msg + y[0] + " ";
+				if(j!=x.length-1){
+					msg = msg + " , ";
+				}
+			}
+			msg = msg + "<br/>";
 		}
 		document.getElementById('status').innerHTML = "<br/><b>You have searched : </b><br/><br/>"+msg;
+		//alert("why?" + len2);
+		var start_limit =4;
+		var end_limit =len2-1;
+		var crt_ques ="";
+		//alert(len2);
+		if(len2>start_limit){
+			var qno = Math.floor(Math.random() * end_limit-1) + 2;
+			var syn = data[qno].synonyms_total;
+			var syn_array = syn.split(',');
+			var syn_any = Math.floor(Math.random() * syn_array.length-1) + 1;
+
+			crt_ques = "I am <b>" + data[qno].typ+"</b>";
+			crt_ques = crt_ques + "<br/>and one of my synonym is : <b>" + syn_array[syn_any].split(":")[0]+"</b>";
+			crt_ques = crt_ques + "<br/>Tell me who am I ? ";
+			var ans = data[qno].search_word;
+			
+			var qno1 = Math.floor(Math.random() * 4-1) + 2;			
+			var qno2 = Math.floor(Math.random() * 4-1) + 2;
+			while(qno2==qno1){
+				qno2 = Math.floor(Math.random() * 4-1) + 2;
+			}
+			var qno3 = Math.floor(Math.random() * 4-1) + 2;
+			while(qno3==qno1 || qno3==qno2){
+				qno3 = Math.floor(Math.random() * 4-1) + 2;
+			}
+			var qno4 = Math.floor(Math.random() * 4-1) + 2;
+			while(qno4==qno1 || qno4==qno2 || qno4==qno3){
+				qno4 = Math.floor(Math.random() * 4-1) + 2;
+			}
+			//var allOptions ="1234";
+			//var e=allOptions.repalce(qno,"");
+			//alert(qno1 + " : " + qno2 + " : " + qno3+ " : " + qno4);
+			var pos = Math.floor(Math.random() * 4-1) + 2;
+			var qset = new Array();
+						
+			qset[qno1] = "Demo 1";
+			qset[qno2] = "Demo 2";
+			qset[qno3] = "Demo 3";
+			
+			for(m=len2-1,k=1;m>0;m--){
+				var b = data[m].search_word;				
+				if(b!=ans){
+					if(k==1){
+						qset[qno1] = b;
+					}else if(k==2){
+						qset[qno2] = b;
+					}else if(k==3){
+						qset[qno3] = b;
+					}else{
+						break;
+					}
+					
+					k++;
+				}
+			}
+			qset[qno4] = ans;
+			
+			crt_ques = crt_ques + "<br/>Ans : "+ data[qno].search_word;
+			crt_ques = crt_ques + "<br/<br/>";
+			for(k=1;k<=4;k++){
+				crt_ques = crt_ques + "<input type='radio' name='quiz_01' id='quiz_01' value='"+qset[k]+"'> "+qset[k]+"<br>";
+			}
+			
+			
+			crt_ques = crt_ques + "<input type='hidden' name='ult_ans' id='ult_ans' value='"+ans+"'>";
+			document.getElementById('game1').innerHTML = crt_ques;
+		}
 	  });
 	}catch(e){}
 	
@@ -225,6 +302,7 @@
 			m1 = m1 + "</div>";				
 				
 			document.getElementById('item_first').innerHTML = m1;
+			document.getElementById('game1_susbmit').innerHTML = "";
 		}else{
 			//Hide button
 			var ud =0;
@@ -248,6 +326,7 @@
 			}catch(e){}
 			document.getElementById('item_first').innerHTML = "";
 			document.getElementById('item_first2').innerHTML = "";
+			//document.getElementById('game1_susbmit').innerHTML = "";
 		}
 	  });
 	}catch(e){}
